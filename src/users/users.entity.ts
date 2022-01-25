@@ -29,22 +29,29 @@ export class User extends BaseEntity {
 
   @Column({
     comment: '유저 아이디',
+    type: 'varchar',
+    length: 50,
   })
   user_id: string;
 
   @Column({
     comment: '비밀번호',
+    type: 'varchar',
   })
   @Exclude()
   password: string;
 
   @Column({
     comment: '유저 이름',
+    type: 'varchar',
+    length: 50,
   })
   user_name: string;
 
   @Column({
     comment: '전화번호',
+    type: 'varchar',
+    length: 50,
   })
   user_phone: string;
 
@@ -59,10 +66,10 @@ export class User extends BaseEntity {
     comment: '마지막 수정 일자',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
   })
   last_update_dt: Date;
 
-  @OneToOne((_type) => Camp, { eager: false })
   @OneToMany((_type) => Camp, (camp) => camp.user)
   @Exclude({ toPlainOnly: true })
   camps: Camp[];

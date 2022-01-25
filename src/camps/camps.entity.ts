@@ -22,31 +22,41 @@ export class Camp extends BaseEntity {
 
   @Column({
     comment: '캠프 이름',
+    type: 'varchar',
+    length: 50,
   })
   camp_name: string;
 
   @Column({
     comment: '우편 번호',
+    type: 'char',
+    length: 5,
   })
   zip_code: string;
 
   @Column({
     comment: '지번 주소',
+    type: 'varchar',
+    length: 100,
   })
   jibun_addr: string;
 
   @Column({
     comment: '상세 주소',
+    type: 'varchar',
+    length: 100,
   })
   dets_addr: string;
 
   @Column({
     comment: '캠핑장 소개',
+    type: 'text',
   })
   intro: string;
 
   @Column({
     comment: '캠핑장 번호',
+    type: 'int',
   })
   mobile: string;
 
@@ -66,5 +76,6 @@ export class Camp extends BaseEntity {
 
   @ManyToOne((_type) => User, (user) => user.camps)
   @Exclude({ toPlainOnly: true })
+  @JoinColumn({ name: 'user_idx' })
   user: User;
 }

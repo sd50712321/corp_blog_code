@@ -33,6 +33,7 @@ import { UsersModule } from './users/users.module';
         username: config.get('DB_USERNAME'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_DATABASE'),
+        logging: true,
       }),
     }),
     ConfigModule.forRoot({
