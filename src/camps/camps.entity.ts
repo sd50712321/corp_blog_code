@@ -74,7 +74,10 @@ export class Camp extends BaseEntity {
   })
   last_update_dt: Date;
 
-  @ManyToOne((_type) => User, (user) => user.camps)
+  @ManyToOne((_type) => User, (user) => user.camps, {
+    onDelete: 'CASCADE',
+    createForeignKeyConstraints: true,
+  })
   @Exclude({ toPlainOnly: true })
   @JoinColumn({ name: 'user_idx' })
   user: User;

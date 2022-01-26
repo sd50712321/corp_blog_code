@@ -6,6 +6,7 @@ import { CampsService } from './camps.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CampsRepository])],
+  exports: [CampsService],
   controllers: [CampsController],
   providers: [CampsService],
 })

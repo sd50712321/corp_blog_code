@@ -1,5 +1,5 @@
 import { User } from './users.entity';
-import { Repository, EntityRepository } from 'typeorm';
+import { Repository, EntityRepository, QueryRunner } from 'typeorm';
 import { Logger } from '@nestjs/common';
 import { UserRegistDto } from './dto/user_regist.dto';
 // import { CampRegistDto } from './dto/camp_regist.dto';
@@ -14,6 +14,14 @@ export class UsersRepository extends Repository<User> {
     });
     this.logger.log('uesr', uesr);
     await this.save(uesr);
+    return uesr;
+  }
+
+  async createUserQueryRunner(
+    userRegistDto: UserRegistDto,
+    queryRunner: QueryRunner,
+  ): Promise<User> {
+    const uesr = await queryRunner.manager.save(User, userRegistDto);
     return uesr;
   }
 

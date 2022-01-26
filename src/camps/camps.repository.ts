@@ -1,5 +1,5 @@
 import { Camp } from './camps.entity';
-import { Repository, EntityRepository } from 'typeorm';
+import { Repository, EntityRepository, QueryRunner } from 'typeorm';
 import { Logger } from '@nestjs/common';
 import { CampRegistDto } from './dto/camp_regist.dto';
 
@@ -17,6 +17,15 @@ export class CampsRepository extends Repository<Camp> {
     return camp;
   }
 
+  async createCampMutlple(
+    camps: Camp[],
+    queryRunner: QueryRunner,
+  ): Promise<Camp[]> {
+    this.logger.log('createCampDto', JSON.stringify(camps));
+    const result = await queryRunner.manager.save(Camp, camps);
+    return result;
+  }
+
   async getCamp(camp: Camp): Promise<Camp[]> {
     const { camp_idx, camp_name, first_create_dt, last_update_dt } = camp;
 
@@ -27,7 +36,7 @@ export class CampsRepository extends Repository<Camp> {
     }
     if (camp_name) {
       query.andWhere("camp.camp_name LIKE ':camp_name'", {
-        camp_name: `%${camp_name}%`,
+        camp_name: '%' + camp_name + '%',
       });
     }
 

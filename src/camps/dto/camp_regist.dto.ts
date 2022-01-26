@@ -2,6 +2,9 @@ import { IsNumber, IsString } from 'class-validator';
 
 export class CampRegistDto {
   @IsString()
+  user_idx: number;
+
+  @IsString()
   camp_name: string;
 
   @IsString()

@@ -4,6 +4,7 @@ import { UsersRepository } from './users.repository';
 import { UserRegistDto } from './dto/user_regist.dto';
 import { generatePassword } from 'src/utils/password';
 import { ConfigService } from '@nestjs/config';
+import { QueryRunner } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -14,7 +15,7 @@ export class UsersService {
 
   private logger = new Logger('UsersService', { timestamp: true });
 
-  async registUser(userRegistDto: UserRegistDto): Promise<void> {
+  async registUser(userRegistDto: UserRegistDto): Promise<User> {
     const { user_id, password } = userRegistDto;
     const userChk = await this.usersRepository.getUserByUserId(user_id);
     this.logger.log('userChk', userChk);
@@ -31,6 +32,31 @@ export class UsersService {
         password: encryptedPassword,
       }),
     );
+    return result;
+  }
+
+  async registUserQueryRUnner(
+    userRegistDto: UserRegistDto,
+    queryRunner: QueryRunner,
+  ): Promise<User> {
+    const { user_id, password } = userRegistDto;
+    const userChk = await this.usersRepository.getUserByUserId(user_id);
+    this.logger.log('userChk', userChk);
+    if (userChk) {
+      throw new BadRequestException('이미 존재하는 아이디입니다.');
+    }
+    const encryptedPassword = await generatePassword(
+      password,
+      this.configService.get('SALT'),
+    );
+    const result = await this.usersRepository.createUserQueryRunner(
+      new User({
+        ...userRegistDto,
+        password: encryptedPassword,
+      }),
+      queryRunner,
+    );
+    return result;
   }
 
   async getUserByUserId(user_id: string): Promise<User> {
