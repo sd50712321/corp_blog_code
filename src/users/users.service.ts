@@ -35,7 +35,7 @@ export class UsersService {
     return result;
   }
 
-  async registUserQueryRUnner(
+  async registUserQueryRunner(
     userRegistDto: UserRegistDto,
     queryRunner: QueryRunner,
   ): Promise<User> {

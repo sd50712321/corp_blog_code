@@ -6,50 +6,9 @@ import {
   HttpStatus,
   Logger,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
-// import { QueryFailedError } from 'typeorm';
-
-// @Catch(HttpException)
-// export class HttpExceptionFilter implements ExceptionFilter {
-//   private logger = new Logger('HttpExceptionFilter', { timestamp: true });
-//   catch(exception: HttpException, host: ArgumentsHost) {
-//     const ctx = host.switchToHttp();
-//     const response = ctx.getResponse<Response>();
-//     const request = ctx.getRequest<Request>();
-//     const status = exception.getStatus();
-
-//     this.logger.log('exception in http', exception);
-//     response.status(status).json({
-//       result: false,
-//       statusCode: status,
-//       timestamp: new Date().toISOString(),
-//       path: request.url,
-//     });
-//   }
-// }
-
-// @Catch(NotFoundException)
-// export class NotFoundExceptionFilter implements ExceptionFilter {
-//   private logger = new Logger('NotFoundExceptionFilter', { timestamp: true });
-//   catch(exception: HttpException, host: ArgumentsHost) {
-//     const ctx = host.switchToHttp();
-//     const response = ctx.getResponse<Response>();
-//     const request = ctx.getRequest<Request>();
-//     const status = exception.getStatus();
-
-//     this.logger.log('exception in notfound ', exception);
-
-//     const message = exception.message;
-//     this.logger.log('message', message);
-//     response.status(status).json({
-//       result: false,
-//       statusCode: status,
-//       message,
-//       timestamp: new Date().toISOString(),
-//       path: request.url,
-//     });
-//   }
-// }
+import { QueryFailedError } from 'typeorm';
 
 @Catch(BadRequestException)
 export class ValidationExceptionFilter
@@ -59,6 +18,8 @@ export class ValidationExceptionFilter
   public catch(exception, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
+    const request = ctx.getRequest();
+
     const status =
       exception instanceof BadRequestException
         ? exception.getStatus()
@@ -67,11 +28,13 @@ export class ValidationExceptionFilter
     response.status(status).json({
       result: false,
       statusCode: status,
-      error: exception.response.error,
-      message:
+      message: exception.response.error,
+      info:
         exception?.response?.message instanceof Array
-          ? exception?.response?.message.map((data) => data.constraints)
+          ? exception.response.message.map((data) => data.constraints)
           : exception?.response?.message,
+      timestamp: new Date().toISOString(),
+      path: request.url,
     });
   }
 }
@@ -92,6 +55,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const error =
       exception instanceof HttpException
         ? exception.message
+        : exception instanceof QueryFailedError
+        ? 'Internal Server Error'
         : 'Internal Server Error';
 
     this.logger.error('exception', exception);
@@ -99,7 +64,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     response.status(status).json({
       result: false,
       statusCode: status,
-      error,
+      message: error,
       timestamp: new Date().toISOString(),
       path: request.url,
     });

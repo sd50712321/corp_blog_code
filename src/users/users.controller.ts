@@ -50,7 +50,7 @@ export class UsersController {
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.startTransaction();
     try {
-      const registUserResult = await this.userService.registUserQueryRUnner(
+      const registUserResult = await this.userService.registUserQueryRunner(
         userRegistDto,
         queryRunner,
       );
@@ -65,7 +65,7 @@ export class UsersController {
         });
       });
       this.logger.log('camps', JSON.stringify(camps));
-      const registCampResult = await this.campService.registCampMutlple(
+      const registCampResult = await this.campService.registCampMultiple(
         camps,
         queryRunner,
       );

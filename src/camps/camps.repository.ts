@@ -17,7 +17,7 @@ export class CampsRepository extends Repository<Camp> {
     return camp;
   }
 
-  async createCampMutlple(
+  async createCampMutiple(
     camps: Camp[],
     queryRunner: QueryRunner,
   ): Promise<Camp[]> {

@@ -14,11 +14,11 @@ export class CampsService {
     return result;
   }
 
-  async registCampMutlple(
+  async registCampMultiple(
     camps: Camp[],
     queryRunner: QueryRunner,
   ): Promise<Camp[]> {
-    const result = await this.campRepository.createCampMutlple(
+    const result = await this.campRepository.createCampMutiple(
       camps,
       queryRunner,
     );
