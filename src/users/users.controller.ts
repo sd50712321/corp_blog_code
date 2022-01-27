@@ -55,6 +55,7 @@ export class UsersController {
         queryRunner,
       );
       const { user_idx } = registUserResult;
+      // throw new InternalServerErrorException('에러발생');
       this.logger.log('registUserResult', JSON.stringify(registUserResult));
       const camps: Camp[] = camp_list.map((camp) => {
         return new Camp({
