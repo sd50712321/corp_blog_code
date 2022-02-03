@@ -30,7 +30,7 @@ export class ResponseTransformInterceptor<T>
         this.logger.log('res', res);
         if (!res) {
           return {
-            result: true,
+            result: false,
           };
         }
         const { data, pagination, result, ...rest } = res || {};
