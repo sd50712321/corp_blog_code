@@ -59,8 +59,18 @@ export class UsersService {
     return result;
   }
 
+  async getUser(): Promise<User[]> {
+    const result = await this.usersRepository.getUser();
+    return result;
+  }
+
   async getUserByUserId(user_id: string): Promise<User> {
     const result = await this.usersRepository.getUserByUserId(user_id);
+    return result;
+  }
+
+  async getLoginInfo(user_id: string): Promise<User> {
+    const result = await this.usersRepository.getLoginInfo(user_id);
     return result;
   }
 }

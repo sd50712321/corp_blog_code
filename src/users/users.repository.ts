@@ -25,28 +25,38 @@ export class UsersRepository extends Repository<User> {
     return uesr;
   }
 
-  async getUser(user: User): Promise<User[]> {
-    const { user_idx, user_name, first_create_dt, last_update_dt } = user;
+  async getUser(user?: User): Promise<User[]> {
+    console.log('user', user);
+    // const { user_idx, user_name, first_create_dt, last_update_dt } = user;
 
-    const query = this.createQueryBuilder('user');
+    const result = await this.find();
 
-    if (user_idx) {
-      query.andWhere('user.user_idx = :user_idx', { user_idx });
-    }
-    if (user_name) {
-      query.andWhere("user.user_name LIKE '%:user_name%'", { user_name });
-    }
-    if (first_create_dt && last_update_dt) {
-      query.andWhere(
-        'user.first_create_dt BETWEEN :first_create_dt AND :last_update_dt',
-        {
-          first_create_dt,
-          last_update_dt,
-        },
-      );
-    }
-    const result = await query.getMany();
+    // if (user_idx) {
+    //   query.andWhere('user.user_idx = :user_idx', { user_idx });
+    // }
+    // if (user_name) {
+    //   query.andWhere("user.user_name LIKE '%:user_name%'", { user_name });
+    // }
+    // if (first_create_dt && last_update_dt) {
+    //   query.andWhere(
+    //     'user.first_create_dt BETWEEN :first_create_dt AND :last_update_dt',
+    //     {
+    //       first_create_dt,
+    //       last_update_dt,
+    //     },
+    //   );
+    // }
+    // const result = await query.getMany();
     return result;
+  }
+
+  async getLoginInfo(user_id: string): Promise<User> {
+    const user = await this.findOne({
+      where: {
+        user_id,
+      },
+    });
+    return user;
   }
 
   async getUserByUserId(user_id: string): Promise<User> {

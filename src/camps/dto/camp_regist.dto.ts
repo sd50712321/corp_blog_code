@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
 
 export class CampRegistDto {
-  @IsString()
+  @IsNumber()
   @ApiProperty({
     description: '유저 인덱스',
     example: 1,

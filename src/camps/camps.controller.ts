@@ -30,7 +30,6 @@ export class CampsController {
     summary: '캠핑장 등록',
     description: '캠핑장을 등록합니다',
   })
-  @ApiTags('캠핑장3', '캠핑장정보')
   @ApiOkResponse({
     type: CommonResponseVoid,
   })

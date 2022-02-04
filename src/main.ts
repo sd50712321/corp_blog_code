@@ -6,11 +6,15 @@ import {
   AllExceptionsFilter,
   ValidationExceptionFilter,
 } from './interceptor/all-exception.filters';
+import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { ResponseTransformInterceptor } from './interceptor/transform.response.interceptor';
 
 async function bootstrap() {
   const logger = new Logger('bootstrap');
   const app = await NestFactory.create(AppModule);
+
+  // 응답 타입 제한 entity에서 exclude 된 타입은 제외
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   // dto 타입 제한
   app.useGlobalPipes(

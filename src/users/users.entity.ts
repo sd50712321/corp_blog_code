@@ -37,8 +37,11 @@ export class User extends BaseEntity {
   @Column({
     comment: '비밀번호',
     type: 'varchar',
+    // select: false,
   })
-  @Exclude()
+  @Exclude({
+    toPlainOnly: true,
+  })
   password: string;
 
   @Column({
@@ -54,6 +57,14 @@ export class User extends BaseEntity {
     length: 50,
   })
   user_phone: string;
+
+  @Column({
+    comment: '유저 등급',
+    type: 'varchar',
+    length: 50,
+    default: 'user',
+  })
+  user_grade: string;
 
   @Column({
     comment: '최초 생성 일자',

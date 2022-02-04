@@ -1,12 +1,16 @@
 import {
   BadRequestException,
   Body,
+  ClassSerializerInterceptor,
   ConflictException,
   Controller,
+  Get,
   InternalServerErrorException,
   Logger,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Camp } from 'src/camps/camps.entity';
 import { CampsService } from 'src/camps/camps.service';
 import { CampRegistDto } from 'src/camps/dto/camp_regist.dto';
@@ -26,6 +30,11 @@ export class UsersController {
   private logger = new Logger('UsersController');
 
   @Post()
+  @ApiTags('인증')
+  @ApiOperation({
+    summary: '회원가입',
+    description: '',
+  })
   async registUser(@Body() userRegistDto: UserRegistDto): Promise<void> {
     this.logger.log('userRegistDto', JSON.stringify(userRegistDto));
     const result = await this.userService.registUser(userRegistDto);
@@ -78,5 +87,12 @@ export class UsersController {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
+  async getUsers(): Promise<User[]> {
+    const result = await this.userService.getUser();
+    return result;
   }
 }
