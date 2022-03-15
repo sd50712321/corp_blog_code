@@ -21,7 +21,13 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     if (err || !user) {
       this.logger.error(
-        `JwtAuthGuard -> handleRequest -> err: ${err}, user: ${user}, info: ${info}`,
+        'JwtAuthGuard -> handleRequest -> err: ' +
+          err +
+          ', user: ' +
+          user +
+          ', info: ' +
+          info +
+          '',
       );
       throw err || new UnauthorizedException();
     }

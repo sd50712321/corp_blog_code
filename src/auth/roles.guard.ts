@@ -30,6 +30,6 @@ export class RolesGuard implements CanActivate {
     }
     this.logger.log('user', user);
     this.logger.log('requiredRoles', requiredRoles);
-    return requiredRoles.some((role) => user.Grade?.includes(role));
+    return requiredRoles.some((role) => user.user_grade?.includes(role));
   }
 }

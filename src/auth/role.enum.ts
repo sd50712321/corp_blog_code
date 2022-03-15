@@ -1,7 +1,6 @@
 export enum Role {
-  admin = '120100',
-  head = '120400',
-  user = '120500',
+  admin = 'admin',
+  user = 'user',
 }
 
 export enum CORP_HEAD_TYPE {

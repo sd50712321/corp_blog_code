@@ -24,7 +24,7 @@ import { RolesGuard } from './roles.guard';
         }),
       }),
     ),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    forwardRef(() => PassportModule.register({ defaultStrategy: 'jwt' })),
     forwardRef(() => ConfigModule),
     forwardRef(() => UsersModule),
   ],
